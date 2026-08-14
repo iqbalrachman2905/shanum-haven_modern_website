@@ -1,0 +1,116 @@
+---
+import { buildWaLink } from '../lib/format.js';
+
+const { content } = Astro.props;
+const waLink = buildWaLink(content.whatsapp_number, `Halo, saya tertarik dengan ${content.hero_title || 'properti ini'}.`);
+const year = new Date().getFullYear();
+---
+
+<section class="cta-band">
+  <div class="container cta-inner">
+    <div>
+      <h2>Siap Punya Rumah Baru di Cibubur?</h2>
+      <p>{content.tagline || 'Konsultasi gratis dengan tim marketing kami'}</p>
+    </div>
+    <a href={waLink} target="_blank" rel="noopener noreferrer" class="btn-wa">Chat Sekarang</a>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <div class="footer-brand">
+      <span class="footer-company">{content.company_name || 'Arciv Property'}</span>
+      {content.address && content.address !== '(opsional, alamat kantor kalau ada)' && (
+        <p>{content.address}</p>
+      )}
+    </div>
+
+    <div class="footer-contact">
+      {content.footer_phone && <a href={`tel:${content.footer_phone}`}>{content.footer_phone}</a>}
+      {content.footer_email && <a href={`mailto:${content.footer_email}`}>{content.footer_email}</a>}
+      {content.instagram_url && (
+        <a href={content.instagram_url} target="_blank" rel="noopener noreferrer">Instagram</a>
+      )}
+    </div>
+  </div>
+  <div class="footer-bottom container">
+    <p>{content.copyright_text || `© ${year} ${content.company_name || 'Arciv Property'}. All rights reserved.`}</p>
+  </div>
+</footer>
+
+<style>
+  .cta-band {
+    background: var(--color-primary);
+    color: var(--color-bg-main);
+    padding-block: var(--space-lg);
+  }
+  .cta-inner {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+    align-items: flex-start;
+  }
+  .cta-inner h2 {
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    margin-bottom: 4px;
+  }
+  .cta-inner p {
+    color: color-mix(in srgb, var(--color-bg-main) 75%, transparent);
+  }
+  .btn-wa {
+    display: inline-block;
+    background: var(--color-secondary);
+    color: var(--color-primary);
+    font-weight: 600;
+    padding: 14px 32px;
+    border-radius: var(--radius-sm);
+    text-decoration: none;
+  }
+
+  .site-footer {
+    background: var(--color-bg-paper);
+    padding-block: var(--space-lg) var(--space-md);
+  }
+  .footer-inner {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: var(--space-md);
+    padding-bottom: var(--space-md);
+  }
+  .footer-company {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.2rem;
+    color: var(--color-primary);
+  }
+  .footer-brand p {
+    color: var(--color-navy-soft);
+    font-size: 0.88rem;
+    margin-top: 4px;
+  }
+  .footer-contact {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .footer-contact a {
+    color: var(--color-navy-soft);
+    text-decoration: none;
+    font-size: 0.9rem;
+  }
+  .footer-bottom {
+    border-top: var(--border-width) solid var(--color-border);
+    padding-top: var(--space-sm);
+    font-size: 0.8rem;
+    color: var(--color-navy-soft);
+  }
+
+  @media (min-width: 640px) {
+    .cta-inner {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+    }
+  }
+</style>

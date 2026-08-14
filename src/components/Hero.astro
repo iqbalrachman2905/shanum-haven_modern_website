@@ -1,0 +1,194 @@
+---
+import { formatRupiah, buildWaLink } from '../lib/format.js';
+
+const { content, heroImageResult, availableUnits, totalUnits } = Astro.props;
+
+const waMessage = `Halo, saya tertarik dengan ${content.hero_title || 'properti ini'}. Boleh info lebih lanjut?`;
+const waLink = buildWaLink(content.whatsapp_number, waMessage);
+---
+
+<section class="hero">
+  {heroImageResult && (
+    <img
+      src={heroImageResult.src}
+      srcset={heroImageResult.srcSet?.attribute}
+      sizes="100vw"
+      alt={content.hero_title || 'Foto cluster'}
+      loading="eager"
+      fetchpriority="high"
+      class="hero-bg"
+    />
+  )}
+  <div class="hero-overlay" aria-hidden="true"></div>
+
+  <div class="container hero-content">
+    {content.badge_text && <span class="hero-badge">{content.badge_text}</span>}
+
+    {availableUnits !== undefined && availableUnits !== null && (
+      <div class="scarcity-badge">
+        🔥 Tersisa <strong>{availableUnits}</strong> dari {totalUnits} unit!
+      </div>
+    )}
+
+
+    <h1 class="hero-title">{content.hero_title}</h1>
+    {content.hero_subtitle && <p class="hero-subtitle">{content.hero_subtitle}</p>}
+
+    <div class="hero-price-card">
+      <span class="hero-price-label">Harga mulai</span>
+      <span class="hero-price">{formatRupiah(content.price_from)}</span>
+      <div class="hero-promo">
+        {content.promo_dp && <span class="promo-chip">{content.promo_dp}</span>}
+        {content.promo_booking && <span class="promo-chip">{content.promo_booking}</span>}
+      </div>
+    </div>
+
+    <div class="hero-stats">
+      {content.total_unit && <div class="stat"><strong>{content.total_unit}</strong><span>Unit</span></div>}
+      {content.jumlah_lantai && <div class="stat"><strong>{content.jumlah_lantai} Lantai</strong></div>}
+      {content.jarak_lrt && <div class="stat"><strong>{content.jarak_lrt}</strong></div>}
+      {content.jarak_tol && <div class="stat"><strong>{content.jarak_tol}</strong></div>}
+    </div>
+
+    <a href={waLink} target="_blank" rel="noopener noreferrer" class="btn-wa">
+      Booking via WhatsApp
+    </a>
+  </div>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    min-height: 100svh;
+    display: flex;
+    align-items: flex-end;
+    overflow: hidden;
+    background: var(--color-primary);
+  }
+  .hero-bg,
+  .hero-overlay {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .hero-overlay {
+    background: linear-gradient(
+      to top,
+      color-mix(in srgb, var(--color-primary) 92%, transparent) 0%,
+      color-mix(in srgb, var(--color-primary) 55%, transparent) 45%,
+      color-mix(in srgb, var(--color-primary) 15%, transparent) 100%
+    );
+  }
+  .hero-content {
+    position: relative;
+    z-index: 1;
+    color: var(--color-bg-main);
+    padding-block: var(--space-xl) var(--space-lg);
+  }
+  .hero-badge {
+    display: inline-block;
+    background: var(--color-secondary);
+    color: var(--color-primary);
+    font-weight: 600;
+    font-size: 0.8rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 6px 16px;
+    border-radius: 999px;
+    margin-bottom: var(--space-sm);
+  }
+  .scarcity-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--color-status-sold);
+    color: var(--color-bg-main);
+    font-weight: 700;
+    font-size: 0.95rem;
+    padding: 8px 18px;
+    border-radius: 999px;
+    margin-bottom: var(--space-sm);
+    animation: pulse-scarcity 2s ease-in-out infinite;
+  }
+  @keyframes pulse-scarcity {
+    0%, 100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--color-status-sold) 40%, transparent); }
+    50% { box-shadow: 0 0 0 8px color-mix(in srgb, var(--color-status-sold) 0%, transparent); }
+  }
+  .hero-title {
+    font-size: clamp(2.2rem, 6vw, 4rem);
+    margin-bottom: var(--space-xs);
+    max-width: 20ch;
+  }
+  .hero-subtitle {
+    font-size: 1.15rem;
+    color: color-mix(in srgb, var(--color-bg-main) 85%, transparent);
+    margin-bottom: var(--space-md);
+  }
+  .hero-price-card {
+    background: var(--color-bg-main);
+    color: var(--color-primary);
+    display: inline-flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: var(--space-sm) var(--space-md);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-soft);
+    margin-bottom: var(--space-md);
+  }
+  .hero-price-label {
+    font-size: 0.8rem;
+    color: var(--color-navy-soft);
+  }
+  .hero-price {
+    font-family: var(--font-display);
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--color-primary);
+  }
+  .hero-promo {
+    display: flex;
+    gap: 8px;
+    margin-top: 4px;
+    flex-wrap: wrap;
+  }
+  .promo-chip {
+    background: var(--color-gold-soft);
+    color: var(--color-primary);
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 999px;
+  }
+  .hero-stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-md);
+    margin-bottom: var(--space-md);
+  }
+  .stat {
+    display: flex;
+    flex-direction: column;
+    font-size: 0.85rem;
+    color: color-mix(in srgb, var(--color-bg-main) 85%, transparent);
+  }
+  .stat strong {
+    font-size: 1.1rem;
+    color: var(--color-bg-main);
+  }
+  .btn-wa {
+    display: inline-block;
+    background: var(--color-secondary);
+    color: var(--color-primary);
+    font-weight: 600;
+    padding: 14px 32px;
+    border-radius: var(--radius-sm);
+    text-decoration: none;
+    box-shadow: var(--shadow-soft);
+    transition: transform 0.15s ease;
+  }
+  .btn-wa:hover {
+    transform: translateY(-2px);
+  }
+</style>

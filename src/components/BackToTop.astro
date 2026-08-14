@@ -1,0 +1,44 @@
+<button class="back-to-top" data-back-to-top aria-label="Kembali ke atas" hidden>
+  &uarr;
+</button>
+
+<script>
+  const btn = document.querySelector('[data-back-to-top]');
+
+  function toggleVisibility() {
+    if (!btn) return;
+    if (window.scrollY > 600) {
+      btn.removeAttribute('hidden');
+    } else {
+      btn.setAttribute('hidden', '');
+    }
+  }
+
+  btn?.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  window.addEventListener('scroll', toggleVisibility, { passive: true });
+  toggleVisibility();
+</script>
+
+<style>
+  .back-to-top {
+    position: fixed;
+    bottom: var(--space-md);
+    left: var(--space-md);
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--color-navy);
+    color: var(--color-white);
+    border: none;
+    font-size: 1.2rem;
+    cursor: pointer;
+    box-shadow: var(--shadow-soft);
+    z-index: 50;
+  }
+  .back-to-top:hover {
+    background: var(--color-navy-soft);
+  }
+</style>

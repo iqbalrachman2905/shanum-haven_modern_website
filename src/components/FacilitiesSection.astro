@@ -1,0 +1,100 @@
+---
+const { content } = Astro.props;
+
+const facilities = content.fasilitas
+  ? String(content.fasilitas).split(',').map(f => f.trim()).filter(Boolean)
+  : [];
+
+// Icon dipilih otomatis berdasar kata kunci di label - jadi kalau lo mau
+// tambah/ubah fasilitas, cukup edit teks di sheet, gak perlu sentuh kode.
+// Icon generik dipakai kalau nggak ada kata kunci yang cocok.
+function pickIcon(label) {
+  const l = label.toLowerCase();
+  if (l.includes('taman') && l.includes('main')) return 'playground';
+  if (l.includes('taman')) return 'tree';
+  if (l.includes('aman')) return 'shield';
+  if (l.includes('jogging') || l.includes('lari')) return 'run';
+  if (l.includes('lapangan') || l.includes('basket') || l.includes('olahraga')) return 'ball';
+  if (l.includes('gerbang') || l.includes('akses')) return 'gate';
+  return 'check';
+}
+
+const ICONS = {
+  tree: 'M12 2 8 9h2l-3 6h3v5h4v-5h3l-3-6h2z',
+  shield: 'M12 2 4 5v6c0 5 3.4 9.4 8 11 4.6-1.6 8-6 8-11V5z',
+  run: 'M13 4a2 2 0 1 1 0 4 2 2 0 0 1 0-4zM7 21l2.5-6L12 17l1 4h2l-1.5-6-2-2 1-4 2 2h3v-2h-3.5l-2.7-2.7c-.4-.4-1-.5-1.5-.3L6 9v4h2V9.8l1.4-.5-1 4L4 15.5V21z',
+  ball: 'M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm0 2c1.7 0 3.2.6 4.5 1.5L12 11 7.5 5.5A8 8 0 0 1 12 4zm-6.9 3.3L9.6 12l-4.5 4.7A8 8 0 0 1 5.1 7.3zm1.4 10.9L11 13.6l4.5 4.6A8 8 0 0 1 6.5 18.2zm11-.9L13 13l4.5-4.6a8 8 0 0 1-.1 8.9z',
+  gate: 'M4 4h2v16H4zM18 4h2v16h-2zM8 4h8v2H8zM8 8h8v2H8zM8 12h8v2H8zM8 16h8v2H8z',
+  playground: 'M12 2v6M9 8h6l3 6H6zM6 14v6M18 14v6M10 20h4',
+  check: 'M20 6 9 17l-5-5'
+};
+---
+
+{facilities.length > 0 && (
+  <section id="fasilitas" class="facilities-section">
+    <div class="container">
+      <div class="section-heading">
+        <span class="eyebrow">Fasilitas</span>
+        <h2>Fasilitas Perumahan</h2>
+      </div>
+
+      <div class="facilities-grid">
+        {facilities.map((label) => (
+          <div class="facility-item">
+            <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <path d={ICONS[pickIcon(label)]} />
+            </svg>
+            <span>{label}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+)}
+
+<style>
+  .facilities-section {
+    padding-block: var(--space-xl);
+    background: var(--color-paper);
+  }
+  .section-heading {
+    text-align: center;
+    margin-bottom: var(--space-lg);
+  }
+  .eyebrow {
+    display: block;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--color-gold);
+    margin-bottom: 6px;
+  }
+  .section-heading h2 {
+    font-size: clamp(1.6rem, 3vw, 2.2rem);
+  }
+  .facilities-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: var(--space-md);
+  }
+  .facility-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    text-align: center;
+    background: var(--color-white);
+    border-radius: var(--radius-md);
+    padding: var(--space-md) var(--space-sm);
+    box-shadow: var(--shadow-card);
+  }
+  .facility-item svg {
+    color: var(--color-gold);
+  }
+  .facility-item span {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--color-navy);
+  }
+</style>

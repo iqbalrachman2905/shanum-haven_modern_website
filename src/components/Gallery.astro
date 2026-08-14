@@ -1,0 +1,85 @@
+---
+import { Image } from 'astro:assets';
+
+const { gallery } = Astro.props;
+
+const items = gallery
+  .filter(g => g.kategori !== 'hero' && g.image_url)
+  .sort((a, b) => (a.urutan || 0) - (b.urutan || 0))
+  .slice(0, 8); // tahap ini dulu, lightbox+swipe penuh nyusul
+---
+
+<section id="galeri" class="gallery-section">
+  <div class="container">
+    <div class="section-heading">
+      <span class="eyebrow">Galeri</span>
+      <h2>Rasakan Suasana Tinggal di Sini</h2>
+    </div>
+
+    <div class="gallery-grid">
+      {items.map((item) => (
+        <figure class="gallery-item">
+          <Image
+            src={item.image_url}
+            inferSize
+            alt={item.caption || 'Foto properti'}
+            widths={[400, 700]}
+            sizes="(max-width: 640px) 50vw, 300px"
+            format="webp"
+            quality={72}
+            loading="lazy"
+          />
+          {item.caption && <figcaption>{item.caption}</figcaption>}
+        </figure>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .gallery-section {
+    padding-block: var(--space-xl);
+  }
+  .section-heading {
+    text-align: center;
+    margin-bottom: var(--space-lg);
+  }
+  .eyebrow {
+    display: block;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--color-secondary);
+    margin-bottom: var(--space-xs);
+  }
+  .section-heading h2 {
+    font-size: clamp(1.6rem, 3vw, 2.2rem);
+  }
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: var(--space-sm);
+  }
+  .gallery-item {
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    box-shadow: var(--shadow-card);
+    position: relative;
+  }
+  .gallery-item :global(img) {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+  }
+  .gallery-item figcaption {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(to top, color-mix(in srgb, var(--color-primary) 75%, transparent), transparent);
+    color: var(--color-bg-main);
+    font-size: 0.78rem;
+    padding: 20px 10px 8px;
+  }
+</style>

@@ -1,0 +1,100 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@400;500;600&display=swap');
+
+/* ========================================================================= */
+/* 🟢 ZONE A — TEMA PROYEK (AI BOLEH UBAH NILAI DI SINI)                     */
+/* Instruksi buat AI: HANYA ubah value (warna hex, nama font). JANGAN ubah   */
+/* nama variabel (--nama-var), jangan tambah/hapus baris.                    */
+/* ========================================================================= */
+:root {
+  /* 1. WARNA BRAND (1 sumber kebenaran) */
+  --color-primary: #14213D;       /* warna dominan: teks utama, elemen kuat */
+  --color-secondary: #B8935F;     /* HANYA buat highlight: harga, badge, garis aksen */
+  
+  /* 2. BACKGROUND */
+  --color-bg-main: #FFFFFF;       /* background dasar website */
+  --color-bg-paper: #EDEEF0;      /* background section alternatif/kartu */
+  
+  /* 3. TIPOGRAFI (Cocokkan dengan @import di atas) */
+  --font-display: 'Playfair Display', Georgia, serif;
+  --font-body: 'Poppins', -apple-system, sans-serif;
+  
+  /* 4. BENTUK (Radius corner) */
+  --radius-sm: 10px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  
+  /* 5. KETEBALAN & INTENSITAS */
+  --border-width: 1px;
+  --shadow-intensity-soft: 8%;    /* dipakai shadow gede (modal, floating bar) */
+  --shadow-intensity-card: 6%;    /* dipakai shadow kecil (card, item) */
+}
+/* ================= END OF ZONE A ========================================= */
+
+
+/* ========================================================================= */
+/* 🔴 ZONE B — CORE ENGINE (JANGAN DIUBAH AI!)                               */
+/* Status badge, shadow, spacing, reset, dan ALIAS untuk komponen lama       */
+/* ========================================================================= */
+:root {
+  /* --- ALIAS KOMPONEN LAMA (Biar gak break / undefined) --- */
+  --color-navy: var(--color-primary);
+  --color-gold: var(--color-secondary);
+  --color-white: var(--color-bg-main);
+  --color-paper: var(--color-bg-paper);
+  
+  /* --- WARNA TURUNAN OTOMATIS DENGAN COLOR-MIX --- */
+  --color-navy-soft: color-mix(in srgb, var(--color-primary) 70%, white);
+  --color-gold-soft: color-mix(in srgb, var(--color-secondary) 25%, white);
+  --color-border: color-mix(in srgb, var(--color-primary) 12%, white);
+  
+  /* --- STATUS BADGE (Universal) --- */
+  --color-status-available: #2F7A4D;
+  --color-status-sold: #8A8F98;
+  --color-status-ready: #1B6FA8;
+  --color-status-progress: #B8935F;
+  
+  /* --- SHADOW DENGAN COLOR-MIX --- */
+  --shadow-soft: 0 8px 30px color-mix(in srgb, var(--color-primary) var(--shadow-intensity-soft), transparent);
+  --shadow-card: 0 4px 16px color-mix(in srgb, var(--color-primary) var(--shadow-intensity-card), transparent);
+  
+  /* --- SPACING SCALE --- */
+  --space-xs: 8px;
+  --space-sm: 16px;
+  --space-md: 24px;
+  --space-lg: 48px;
+  --space-xl: 80px;
+  --container-width: 1200px;
+}
+
+/* --- GLOBAL BASE STYLES --- */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--font-body);
+  color: var(--color-primary);
+  background: var(--color-bg-main);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  line-height: 1.2;
+  font-weight: 600;
+}
+img { max-width: 100%; display: block; }
+.container {
+  max-width: var(--container-width);
+  margin-inline: auto;
+  padding-inline: var(--space-sm);
+}
+
+/* --- AKSESIBILITAS & ANIMASI --- */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}
+a:focus-visible, button:focus-visible {
+  outline: 2px solid var(--color-secondary);
+  outline-offset: 2px;
+}
+/* ================= END OF ZONE B ========================================= */

@@ -1,0 +1,55 @@
+---
+import UnitCard from './UnitCard.astro';
+import { findCoverImage } from '../lib/api.js';
+
+const { units, gallery } = Astro.props;
+---
+
+<section id="unit" class="units-section">
+  <div class="container">
+    <div class="section-heading">
+      <span class="eyebrow">Pilihan Unit</span>
+      <h2>Temukan Tipe yang Sesuai</h2>
+    </div>
+
+    <!--
+      Filter chip (per tipe/status) sengaja BELUM ditambah di tahap ini -
+      itu butuh sedikit JS interaktif (Vue island), dan kita mau pastiin
+      dulu fondasi kecepatan dari data+gambar statis udah oke sebelum
+      nambah interaktivitas. Nyusul di iterasi berikutnya.
+    -->
+    <div class="units-grid">
+      {units.map((unit) => (
+        <UnitCard unit={unit} cover={findCoverImage(gallery, 'unit', unit.kode_unit)} />
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .units-section {
+    padding-block: var(--space-xl);
+    background: var(--color-paper);
+  }
+  .section-heading {
+    text-align: center;
+    margin-bottom: var(--space-lg);
+  }
+  .eyebrow {
+    display: block;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--color-gold);
+    margin-bottom: 6px;
+  }
+  .section-heading h2 {
+    font-size: clamp(1.6rem, 3vw, 2.2rem);
+  }
+  .units-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: var(--space-md);
+  }
+</style>

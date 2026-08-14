@@ -1,0 +1,116 @@
+---
+import { Image } from 'astro:assets';
+import { formatRupiah, statusStyle } from '../lib/format.js';
+
+const { unit, cover } = Astro.props;
+const badge = statusStyle(unit.status);
+---
+
+<article class="unit-card">
+  <div class="unit-photo">
+    {cover ? (
+      <Image
+        src={cover.image_url}
+        inferSize
+        alt={cover.caption || `Tipe ${unit.tipe}`}
+        widths={[400, 800]}
+        sizes="(max-width: 640px) 100vw, 380px"
+        format="webp"
+        quality={72}
+        loading="lazy"
+      />
+    ) : (
+      <div class="unit-photo-placeholder">Foto belum tersedia</div>
+    )}
+    <span class="unit-status" style={`--status-color:${badge.color}`}>{badge.label}</span>
+  </div>
+
+  <div class="unit-body">
+    <h3 class="unit-title">Tipe {unit.tipe}</h3>
+    {unit.deskripsi && <p class="unit-desc">{unit.deskripsi}</p>}
+
+    <ul class="unit-specs">
+      {unit.luas_tanah && <li>LT {unit.luas_tanah} m²</li>}
+      {unit.luas_bangunan && <li>LB {unit.luas_bangunan} m²</li>}
+      {unit.kamar && <li>{unit.kamar} KT</li>}
+    </ul>
+
+    <div class="unit-footer">
+      <span class="unit-price">{formatRupiah(unit.harga)}</span>
+    </div>
+  </div>
+</article>
+
+<style>
+  .unit-card {
+    background: var(--color-white);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-card);
+    display: flex;
+    flex-direction: column;
+  }
+  .unit-photo {
+    position: relative;
+    aspect-ratio: 4 / 3;
+    background: var(--color-paper);
+  }
+  .unit-photo :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .unit-photo-placeholder {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    place-items: center;
+    color: var(--color-navy-soft);
+    font-size: 0.85rem;
+  }
+  .unit-status {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    background: var(--status-color);
+    color: var(--color-white);
+    font-size: 0.72rem;
+    font-weight: 600;
+    padding: 4px 12px;
+    border-radius: 999px;
+  }
+  .unit-body {
+    padding: var(--space-sm);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex: 1;
+  }
+  .unit-title {
+    font-size: 1.25rem;
+  }
+  .unit-desc {
+    font-size: 0.88rem;
+    color: var(--color-navy-soft);
+    line-height: 1.5;
+  }
+  .unit-specs {
+    display: flex;
+    gap: 12px;
+    list-style: none;
+    font-size: 0.82rem;
+    color: var(--color-navy-soft);
+    flex-wrap: wrap;
+  }
+  .unit-footer {
+    margin-top: auto;
+    padding-top: 8px;
+    border-top: 1px solid var(--color-paper);
+  }
+  .unit-price {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.2rem;
+    color: var(--color-navy);
+  }
+</style>

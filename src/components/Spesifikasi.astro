@@ -1,0 +1,108 @@
+---
+const { content } = Astro.props;
+
+const specKeys = Object.keys(content).filter(key => key.startsWith('spec_'));
+const specs = specKeys.map(key => {
+  const [title, desc] = content[key].split('::');
+  return { title, desc };
+}).filter(item => item.title && item.desc);
+---
+
+<section id="spesifikasi" class="spesifikasi-section">
+  <div class="container">
+    <div class="section-heading">
+      <span class="eyebrow">Kualitas Material</span>
+      <h2>Spesifikasi Bangunan</h2>
+    </div>
+
+    <div class="spec-grid">
+      {specs.map(spec => (
+        <div class="spec-item">
+          <span class="spec-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path>
+            </svg>
+          </span>
+          <div class="spec-text">
+            <h3>{spec.title}</h3>
+            <p>{spec.desc}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .spesifikasi-section {
+    padding-block: var(--space-xl);
+    background: var(--color-paper);
+  }
+  .section-heading {
+    text-align: center;
+    margin-bottom: var(--space-lg);
+  }
+  .eyebrow {
+    display: block;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--color-gold);
+    margin-bottom: var(--space-xs);
+  }
+  .section-heading h2 {
+    font-size: clamp(1.6rem, 3vw, 2.2rem);
+    font-weight: 800;
+    color: var(--color-navy);
+  }
+  
+  .spec-grid {
+    max-width: 900px;
+    margin-inline: auto;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    column-gap: var(--space-xl);
+    row-gap: var(--space-md);
+  }
+  
+  .spec-item {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-sm);
+  }
+  
+  .spec-icon {
+    flex-shrink: 0;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: var(--color-gold);
+    color: var(--color-white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 2px;
+  }
+  
+  .spec-text h3 {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--color-navy);
+    margin-bottom: 4px;
+    line-height: 1.3;
+  }
+  
+  .spec-text p {
+    font-size: 0.85rem;
+    color: var(--color-gold);
+    line-height: 1.4;
+  }
+
+  @media (max-width: 640px) {
+    .spec-grid {
+      grid-template-columns: 1fr;
+      row-gap: var(--space-md);
+    }
+  }
+</style>
