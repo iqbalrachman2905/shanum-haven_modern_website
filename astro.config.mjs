@@ -4,10 +4,10 @@ import sitemap from '@astrojs/sitemap';
 
 export default defineConfig({
   // 1. URL utama GitHub Pages lo
-  site: 'https://purikencanapermai2.com',
+  site: 'https://github.com/iqbalrachman2905',
   
   // 2. Base path sesuai nama repo supaya gambar gak error/404
-  //base: '/pkp2-extension-version2',
+  base: '/shanum-haven_modern_website',
 
   // 3. Integrasi bawaan lo
   integrations: [vue(), sitemap()],
