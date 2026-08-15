@@ -5,7 +5,8 @@
 let cachedSiteData = null;
 const articleCache = new Map();
 
-const API_URL = 'https://script.google.com/macros/s/AKfycbwlmX6B5_BUlANlFm5ZkdvwRBZDaoSEXKgsq8AMaAkMlxwzljcUyP04T2vUgpN_yW_1/exec';
+const API_URL = '// Contoh penerapan di dalam file api.js
+const apiUrl = "https://script.google.com/macros/s/AKfycbyyLeTA878Lxi1HROrPBa-2ZG3yNBMBa4z0ZUxzmLs_ZaVmzOcLu0rPCAeu-DqxiVMpgQ/exec";
 
 /**
  * Dipanggil di frontmatter halaman .astro (jalan di Node.js pas build,
