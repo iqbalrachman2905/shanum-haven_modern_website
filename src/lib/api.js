@@ -5,7 +5,7 @@
 let cachedSiteData = null;
 const articleCache = new Map();
 
-const API_URL = '// Contoh penerapan di dalam file api.js
+const API_URL = '// Contoh penerapan di dalam file api.js'
 const apiUrl = "https://script.google.com/macros/s/AKfycbyyLeTA878Lxi1HROrPBa-2ZG3yNBMBa4z0ZUxzmLs_ZaVmzOcLu0rPCAeu-DqxiVMpgQ/exec";
 
 /**
