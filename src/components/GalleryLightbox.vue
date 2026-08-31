@@ -93,10 +93,19 @@ onUnmounted(() => {
 .gallery-item {
   border-radius: var(--radius-md);
   overflow: hidden;
-  box-shadow: var(--shadow-card);
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
   position: relative;
   cursor: pointer;
   margin: 0;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.gallery-item:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px color-mix(in srgb, var(--color-primary) 12%, transparent);
 }
 .gallery-item img {
   width: 100%;
@@ -122,7 +131,9 @@ onUnmounted(() => {
 .lightbox {
   position: fixed;
   inset: 0;
-  background: color-mix(in srgb, var(--color-primary) 94%, transparent);
+  background: rgba(20, 33, 61, 0.88);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   z-index: 100;
   display: flex;
   flex-direction: column;
@@ -157,14 +168,20 @@ onUnmounted(() => {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  background: color-mix(in srgb, var(--color-bg-main) 15%, transparent);
-  border: none;
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
   color: var(--color-bg-main);
   font-size: 2rem;
   width: 44px;
   height: 44px;
   border-radius: 50%;
   cursor: pointer;
+  transition: background 0.2s ease;
+}
+.lb-nav:hover {
+  background: rgba(255, 255, 255, 0.22);
 }
 .lb-prev { left: var(--space-sm); }
 .lb-next { right: var(--space-sm); }

@@ -81,9 +81,12 @@ const totalPayment = computed(() => monthlyInstallment.value * tenor.value * 12 
 
 <style scoped>
 .kpr-card {
-  background: var(--color-white);
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--glass-border);
   border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-soft);
+  box-shadow: var(--glass-shadow);
   padding: var(--space-lg);
   display: grid;
   gap: var(--space-lg);
@@ -103,11 +106,20 @@ const totalPayment = computed(() => monthlyInstallment.value * tenor.value * 12 
 .field input[type='number'],
 .field select {
   padding: 10px 12px;
-  border: 1px solid var(--color-paper);
+  border: 1px solid var(--glass-border);
   border-radius: var(--radius-sm);
   font-family: var(--font-body);
   font-size: 1rem;
   color: var(--color-navy);
+  background: rgba(255,255,255,0.6);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: border-color 0.2s ease;
+}
+.field input[type='number']:focus,
+.field select:focus {
+  border-color: var(--color-secondary);
+  outline: none;
 }
 .field input[type='range'] {
   accent-color: var(--color-gold);

@@ -1,32 +1,39 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&family=Playfair+Display:wght@600;700&display=swap');
-
 /* ========================================================================= */
 /* 🟢 ZONE A — TEMA PROYEK (AI BOLEH UBAH NILAI DI SINI)                     */
 /* Instruksi buat AI: HANYA ubah value (warna hex, nama font). JANGAN ubah   */
 /* nama variabel (--nama-var), jangan tambah/hapus baris.                    */
 /* ========================================================================= */
 :root {
-/* 1. WARNA BRAND (1 sumber kebenaran) */
---color-primary: #102A43;       /* Contrast ratio: 14.9:1 */
---color-secondary: #DDAE6F;     /* Gold solid untuk highlight & tombol */
+  /* 1. WARNA BRAND (1 sumber kebenaran) */
+  --color-primary: #102A43;       /* Contrast ratio: 14.9:1 */
+  --color-secondary: #DDAE6F;     /* Gold solid untuk highlight & tombol */
+  
+  /* 2. BACKGROUND */
+  --color-bg-main: #FFFFFF;       /* background dasar website */
+  --color-bg-paper: #F2F5F8;      /* background section alternatif/kartu */
+  
+  /* 3. TIPOGRAFI (Cocokkan dengan @fontsource imports di BaseLayout) */
+  --font-display: 'Playfair Display', Georgia, serif;
+  --font-body: 'Montserrat', -apple-system, sans-serif;
+  
+  /* 4. BENTUK (Radius corner) */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  
+  /* 5. KETEBALAN & INTENSITAS */
+  --border-width: 1px;
+  --shadow-intensity-soft: 10%;    /* dipakai shadow gede (modal, floating bar) */
+  --shadow-intensity-card: 5%;    /* dipakai shadow kecil (card, item) */
 
-/* 2. BACKGROUND */
---color-bg-main: #FFFFFF;       /* background dasar website */
---color-bg-paper: #F2F5F8;      /* background section alternatif/kartu */
-
-/* 3. TIPOGRAFI (Cocokkan dengan @import di atas) */
---font-display: 'Playfair Display', Georgia, serif;
---font-body: 'Montserrat', -apple-system, sans-serif;
-
-/* 4. BENTUK (Radius corner) */
---radius-sm: 8px;
---radius-md: 12px;
---radius-lg: 20px;              /* Pill-shape untuk tombol */
-
-/* 5. KETEBALAN & INTENSITAS */
---border-width: 1px;
---shadow-intensity-soft: 10%;    /* dipakai shadow gede (modal, floating bar) */
---shadow-intensity-card: 5%;    /* dipakai shadow kecil (card, item) */
+  /* 6. GLASSMORPHISM (Efek kaca premium) */
+  --glass-blur: 16px;
+  --glass-bg: rgba(255, 255, 255, 0.72);
+  --glass-bg-hero: rgba(255, 255, 255, 0.12);
+  --glass-border: rgba(255, 255, 255, 0.22);
+  --glass-border-hero: rgba(255, 255, 255, 0.18);
+  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+}
 }
 /* ================= END OF ZONE A ========================================= */
 
@@ -96,5 +103,21 @@ img { max-width: 100%; display: block; }
 a:focus-visible, button:focus-visible {
   outline: 2px solid var(--color-secondary);
   outline-offset: 2px;
+}
+
+/* --- GLASSMORPHISM UTILITY CLASS --- */
+.glass {
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+}
+.glass--hero {
+  background: var(--glass-bg-hero);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--glass-border-hero);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
 }
 /* ================= END OF ZONE B ========================================= */

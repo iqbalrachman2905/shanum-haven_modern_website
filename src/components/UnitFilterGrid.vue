@@ -287,12 +287,20 @@ function monthlyFor(unit) { return estimateMonthlyInstallment(unit.harga, { dpPe
 
 /* Unit Card */
 .unit-card { 
-  background: var(--color-white); 
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--glass-border);
   border-radius: var(--radius-lg); 
   overflow: hidden; 
-  box-shadow: var(--shadow-card); 
+  box-shadow: var(--glass-shadow);
   display: flex; 
-  flex-direction: column; 
+  flex-direction: column;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.unit-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px color-mix(in srgb, var(--color-primary) 12%, transparent);
 }
 
 /* Penyesuaian ukuran card JIKA di dalam slider */
@@ -319,7 +327,7 @@ function monthlyFor(unit) { return estimateMonthlyInstallment(unit.harga, { dpPe
 .unit-wa-btn { background: #25D366; color: var(--color-white); font-size: 0.78rem; font-weight: 600; padding: var(--space-xs) 14px; border-radius: var(--radius-sm); text-decoration: none; white-space: nowrap; }
 
 /* Compare Bar & Modal styling (Tetap) */
-.compare-bar { position: fixed; bottom: calc(var(--space-md) + 64px); left: var(--space-md); right: var(--space-md); max-width: 420px; margin-inline: auto; background: var(--color-navy); color: var(--color-white); border-radius: 999px; padding: 10px 10px 10px 20px; display: flex; align-items: center; justify-content: space-between; gap: 12px; box-shadow: var(--shadow-soft); z-index: 54; }
+.compare-bar { position: fixed; bottom: calc(var(--space-md) + 64px); left: var(--space-md); right: var(--space-md); max-width: 420px; margin-inline: auto; background: rgba(20, 33, 61, 0.85); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(255,255,255,0.12); color: var(--color-white); border-radius: 999px; padding: 10px 10px 10px 20px; display: flex; align-items: center; justify-content: space-between; gap: 12px; box-shadow: 0 8px 32px rgba(0,0,0,0.18); z-index: 54; }
 .compare-bar-info { display: flex; flex-direction: column; min-width: 0; }
 .compare-bar-info strong { font-size: 0.85rem; }
 .compare-bar-info span { font-size: 0.72rem; color: color-mix(in srgb, var(--color-white) 70%, transparent); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
@@ -327,13 +335,13 @@ function monthlyFor(unit) { return estimateMonthlyInstallment(unit.harga, { dpPe
 .btn-compare { background: var(--color-gold); color: var(--color-navy); font-weight: 600; font-size: 0.82rem; padding: var(--space-xs) var(--space-sm); border: none; border-radius: 999px; cursor: pointer; }
 .btn-clear { background: color-mix(in srgb, var(--color-white) 15%, transparent); color: var(--color-white); border: none; width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; cursor: pointer; flex-shrink: 0; }
 .compare-modal-backdrop { position: fixed; inset: 0; background: color-mix(in srgb, var(--color-primary) 55%, transparent); z-index: 70; display: flex; align-items: flex-end; justify-content: center; padding: 0; }
-.compare-modal { background: var(--color-white); border-radius: var(--radius-lg) var(--radius-lg) 0 0; width: 100%; max-width: 720px; max-height: 85vh; overflow-y: auto; padding: var(--space-md); }
+.compare-modal { background: var(--glass-bg); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid var(--glass-border); border-radius: var(--radius-lg) var(--radius-lg) 0 0; width: 100%; max-width: 720px; max-height: 85vh; overflow-y: auto; padding: var(--space-md); box-shadow: 0 -8px 40px rgba(0,0,0,0.15); }
 .compare-modal-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; margin-bottom: var(--space-md); }
 .compare-modal-title { font-family: var(--font-display); font-size: 1.2rem; color: var(--color-navy); }
 .compare-modal-note { font-size: 0.78rem; color: var(--color-navy-soft); margin-top: 4px; }
 .compare-modal .btn-clear { background: var(--color-paper); color: var(--color-navy); }
 .compare-columns { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--space-sm); }
-.compare-column { border: 1px solid var(--color-paper); border-radius: var(--radius-md); padding: var(--space-sm); display: flex; flex-direction: column; gap: var(--space-xs); }
+.compare-column { background: rgba(255,255,255,0.5); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); border: 1px solid var(--glass-border); border-radius: var(--radius-md); padding: var(--space-sm); display: flex; flex-direction: column; gap: var(--space-xs); }
 .compare-thumb { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: var(--radius-sm); display: block; }
 .compare-thumb-placeholder { background: var(--color-paper); }
 .compare-column h4 { font-size: 1rem; color: var(--color-navy); }
