@@ -22,3 +22,24 @@ Thumbs.db
 
 # Astro
 .astro/
+tsconfig.tsbuildinfo
+
+# AI agent configs
+.agents/
+.augment/
+.claude/
+.codebuddy/
+.codewhale/
+.continue/
+.cursor/
+.factory/
+.gemini/
+.github/prompts/
+.kilocode/
+.kiro/
+.opencode/
+.qoder/
+.roo/
+.trae/
+.warp/
+.windsurf/
