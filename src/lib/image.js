@@ -9,11 +9,12 @@ import { getImage } from 'astro:assets';
  * bertambah foto dari waktu ke waktu.
  */
 export async function safeImage(src, options = {}) {
-  if (!src) return null;
-  try {
-    return await getImage({ src, inferSize: true, ...options });
-  } catch (err) {
-    console.warn(`⚠️  Gagal proses gambar, dilewati: ${src}\n   Alasan: ${err.message}`);
-    return null;
-  }
+   if (!src) return null;
+   try {
+     // inferSize hanya work untuk file lokal, untuk URL eksternal jangan gunakan
+     return await getImage({ src, ...options });
+   } catch (err) {
+     console.warn(`⚠️  Gagal proses gambar, dilewati: ${src}\n   Alasan: ${err.message}`);
+     return null;
+   }
 }
