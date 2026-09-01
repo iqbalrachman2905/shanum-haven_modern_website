@@ -114,7 +114,7 @@ const totalPayment = computed(() => monthlyInstallment.value * tenor.value * 12 
   background: rgba(255,255,255,0.6);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
-  transition: border-color 0.2s ease;
+  transition: border-color var(--duration-normal) var(--ease-out);
 }
 .field input[type='number']:focus,
 .field select:focus {

@@ -239,7 +239,7 @@ function monthlyFor(unit) { return estimateMonthlyInstallment(unit.harga, { dpPe
 /* Toolbar & Chips */
 .toolbar { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 12px; margin-bottom: var(--space-sm); }
 .filter-chips { display: flex; gap: var(--space-xs); flex-wrap: wrap; justify-content: center; }
-.chip { background: var(--color-white); border: 1px solid var(--color-paper); color: var(--color-navy-soft); font-size: 0.85rem; font-weight: 500; padding: var(--space-xs) 18px; border-radius: 999px; cursor: pointer; transition: all 0.15s ease; }
+.chip { background: var(--color-white); border: 1px solid var(--color-paper); color: var(--color-navy-soft); font-size: 0.85rem; font-weight: 500; padding: var(--space-xs) 18px; border-radius: 999px; cursor: pointer;  transition: all var(--duration-fast) var(--ease-out); }
 .chip:hover { border-color: var(--color-gold); }
 .chip.is-active { background: var(--color-navy); border-color: var(--color-navy); color: var(--color-white); }
 .sort-select select { background: var(--color-white); border: 1px solid var(--color-paper); border-radius: 999px; padding: var(--space-xs) var(--space-sm); font-size: 0.85rem; color: var(--color-navy); cursor: pointer; }
@@ -296,7 +296,7 @@ function monthlyFor(unit) { return estimateMonthlyInstallment(unit.harga, { dpPe
   box-shadow: var(--glass-shadow);
   display: flex; 
   flex-direction: column;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition: transform var(--duration-normal) var(--ease-out), box-shadow var(--duration-normal) var(--ease-out);
 }
 .unit-card:hover {
   transform: translateY(-4px);

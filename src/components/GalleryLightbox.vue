@@ -101,7 +101,7 @@ onUnmounted(() => {
   position: relative;
   cursor: pointer;
   margin: 0;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition: transform var(--duration-normal) var(--ease-out), box-shadow var(--duration-normal) var(--ease-out);
 }
 .gallery-item:hover {
   transform: translateY(-4px);
@@ -112,7 +112,7 @@ onUnmounted(() => {
   aspect-ratio: 4 / 3;
   object-fit: cover;
   display: block;
-  transition: transform 0.2s ease;
+  transition: transform var(--duration-normal) var(--ease-out);
 }
 .gallery-item:hover img {
   transform: scale(1.04);
@@ -178,7 +178,7 @@ onUnmounted(() => {
   height: 44px;
   border-radius: 50%;
   cursor: pointer;
-  transition: background 0.2s ease;
+  transition: background var(--duration-normal) var(--ease-out);
 }
 .lb-nav:hover {
   background: rgba(255, 255, 255, 0.22);

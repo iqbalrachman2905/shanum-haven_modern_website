@@ -110,7 +110,7 @@ const colRight = faqs.slice(half);
     border-radius: var(--radius-md);
     box-shadow: var(--shadow-card);
     overflow: hidden;
-    transition: box-shadow 0.3s ease;
+    transition: box-shadow var(--duration-slow) var(--ease-out);
   }
   .faq-item:hover {
     box-shadow: var(--shadow-soft);
@@ -127,7 +127,7 @@ const colRight = faqs.slice(half);
     font-weight: 700;
     font-size: 1rem;
     color: var(--color-primary);
-    transition: color 0.3s ease;
+    transition: color var(--duration-slow) var(--ease-out);
   }
   .faq-item:hover .faq-question {
     color: var(--color-secondary);
@@ -142,7 +142,7 @@ const colRight = faqs.slice(half);
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: transform 0.3s ease;
+    transition: transform var(--duration-slow) var(--ease-out);
   }
   .faq-icon svg {
     width: 18px;

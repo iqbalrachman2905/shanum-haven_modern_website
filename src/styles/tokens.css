@@ -16,15 +16,38 @@
   --font-display: 'Playfair Display', Georgia, serif;
   --font-body: 'Montserrat', -apple-system, sans-serif;
   
+  /* 3b. TIPOGRAFI SKALA (Heading & text sizes) */
+  --text-h1: clamp(2.2rem, 6vw, 4rem);
+  --text-h2: clamp(1.6rem, 4vw, 2.5rem);
+  --text-h3: clamp(1.2rem, 3vw, 1.75rem);
+  --text-body: 1rem;
+  --text-small: 0.875rem;
+  --text-xs: 0.75rem;
+  --leading-tight: 1.2;
+  --leading-normal: 1.6;
+  --leading-relaxed: 1.8;
+  --tracking-tight: -0.02em;
+  --tracking-wide: 0.08em;
+
   /* 4. BENTUK (Radius corner) */
   --radius-sm: 8px;
   --radius-md: 12px;
   --radius-lg: 20px;
-  
+  --radius-xl: 28px;
+  --radius-full: 9999px;
+
   /* 5. KETEBALAN & INTENSITAS */
   --border-width: 1px;
   --shadow-intensity-soft: 10%;    /* dipakai shadow gede (modal, floating bar) */
   --shadow-intensity-card: 5%;    /* dipakai shadow kecil (card, item) */
+
+  /* 7. ANIMASI & TRANSISI */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --duration-fast: 150ms;
+  --duration-normal: 250ms;
+  --duration-slow: 400ms;
 
   /* 6. GLASSMORPHISM (Efek kaca premium) */
   --glass-blur: 16px;
@@ -33,7 +56,6 @@
   --glass-border: rgba(255, 255, 255, 0.22);
   --glass-border-hero: rgba(255, 255, 255, 0.18);
   --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
-}
 }
 /* ================= END OF ZONE A ========================================= */
 
@@ -60,17 +82,37 @@
   --color-status-ready: #1B6FA8;
   --color-status-progress: #B8935F;
   
-  /* --- SHADOW DENGAN COLOR-MIX --- */
-  --shadow-soft: 0 8px 30px color-mix(in srgb, var(--color-primary) var(--shadow-intensity-soft), transparent);
-  --shadow-card: 0 4px 16px color-mix(in srgb, var(--color-primary) var(--shadow-intensity-card), transparent);
-  
+  /* --- SHADOW SKALA --- */
+  --shadow-xs: 0 1px 2px color-mix(in srgb, var(--color-primary) 5%, transparent);
+  --shadow-sm: 0 2px 8px color-mix(in srgb, var(--color-primary) 8%, transparent);
+  --shadow-md: 0 4px 16px color-mix(in srgb, var(--color-primary) var(--shadow-intensity-card), transparent);
+  --shadow-lg: 0 8px 32px color-mix(in srgb, var(--color-primary) var(--shadow-intensity-soft), transparent);
+  --shadow-xl: 0 16px 48px color-mix(in srgb, var(--color-primary) 14%, transparent);
+  /* Aliases untuk backward compat */
+  --shadow-soft: var(--shadow-lg);
+  --shadow-card: var(--shadow-md);
+
   /* --- SPACING SCALE --- */
+  --space-2xs: 4px;
   --space-xs: 8px;
   --space-sm: 16px;
   --space-md: 24px;
   --space-lg: 48px;
   --space-xl: 80px;
+  --space-2xl: 120px;
   --container-width: 1200px;
+
+  /* --- Z-INDEX SCALE --- */
+  --z-dropdown: 10;
+  --z-sticky: 20;
+  --z-navbar: 50;
+  --z-overlay: 80;
+  --z-modal: 100;
+  --z-toast: 150;
+
+  /* --- FOCUS RING --- */
+  --focus-ring: 0 0 0 3px color-mix(in srgb, var(--color-secondary) 40%, transparent);
+  --focus-ring-offset: 2px;
 }
 
 /* --- GLOBAL BASE STYLES --- */
@@ -85,8 +127,15 @@ body {
 }
 h1, h2, h3, h4 {
   font-family: var(--font-display);
-  line-height: 1.2;
+  line-height: var(--leading-tight);
   font-weight: 600;
+  text-wrap: balance;
+}
+h1 { font-size: var(--text-h1); }
+h2 { font-size: var(--text-h2); }
+h3 { font-size: var(--text-h3); }
+.prose p {
+  text-wrap: pretty;
 }
 img { max-width: 100%; display: block; }
 .container {
@@ -102,7 +151,8 @@ img { max-width: 100%; display: block; }
 }
 a:focus-visible, button:focus-visible {
   outline: 2px solid var(--color-secondary);
-  outline-offset: 2px;
+  outline-offset: var(--focus-ring-offset);
+  box-shadow: var(--focus-ring);
 }
 
 /* --- GLASSMORPHISM UTILITY CLASS --- */

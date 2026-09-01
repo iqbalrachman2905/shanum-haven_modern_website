@@ -27,8 +27,8 @@ const waLink = buildWaLink(waNumber, 'Halo, saya mau tanya-tanya tentang Puri Ke
     display: grid;
     place-items: center;
     box-shadow: var(--shadow-soft);
-    z-index: 55;
-    transition: transform 0.15s ease;
+    z-index: var(--z-toast);
+    transition: transform var(--duration-fast) var(--ease-out);
   }
   .sticky-wa:hover {
     transform: scale(1.06);

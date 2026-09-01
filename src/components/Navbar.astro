@@ -68,13 +68,13 @@ const navLinks = [
     top: 0;
     left: 0;
     right: 0;
-    z-index: 50;
+    z-index: var(--z-navbar);
     background: transparent;
-    transition: background 0.2s ease, box-shadow 0.2s ease;
+    transition: background var(--duration-normal) var(--ease-out), box-shadow var(--duration-normal) var(--ease-out);
   }
   .navbar.is-scrolled {
     background: var(--color-white);
-    box-shadow: var(--shadow-card);
+    box-shadow: var(--shadow-sm);
   }
   .navbar-inner {
     display: flex;
