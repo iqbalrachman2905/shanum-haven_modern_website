@@ -36,16 +36,35 @@ export async function getStaticPaths() {
     }
   }
 
-  return Promise.all(
-    [...bySlug.values()].map(async (a) => {
+  // Fetch semua artikel - kalau 1 gagal, skip (jangan gagalkan seluruh build)
+  const results = [];
+  for (const a of bySlug.values()) {
+    try {
       const full = await getArticleBySlug(a.slug);
-      return { params: { slug: a.slug }, props: { article: full } };
-    })
-  );
+      results.push({ params: { slug: a.slug }, props: { article: full } });
+    } catch (err) {
+      // Log tapi jangan throw - build tetap jalan untuk artikel lain
+      console.error(`[SKIP] Gagal render artikel "${a.slug}": ${err.message}`);
+    }
+  }
+  
+  return results;
 }
 
 const { article } = Astro.props;
-const { content, articles, units, gallery } = await getSiteData();
+
+// Fetch data - kalau gagal, tampilkan error yang berguna
+let content, articles, units, gallery;
+try {
+  ({ content, articles, units, gallery } = await getSiteData());
+} catch (err) {
+  // Data minimal agar halaman tetap render dengan pesan error
+  content = { company_name: 'Arciv Property', hero_title: 'Error' };
+  articles = [];
+  units = [];
+  gallery = [];
+  console.error(`[ARTIKEL] Gagal fetch site data: ${err.message}`);
+}
 
 let coverSrc = null;
 if (article.cover_url) {
@@ -74,27 +93,42 @@ const tagMatches = otherArticles.filter(a =>
 const related = isPillar
   ? otherArticles
   : (tagMatches.length > 0 ? tagMatches : otherArticles).slice(0, 3);
-const relatedWithCover = await Promise.all(
-  related.map(async (a) => {
-    const opt = a.cover_url
-      ? await safeImage(a.cover_url, { width: 500, format: 'webp', quality: 70 })
-      : null;
-    return { ...a, coverSrc: opt?.src || null };
-  })
-);
+
+let relatedWithCover = [];
+try {
+  relatedWithCover = await Promise.all(
+    related.map(async (a) => {
+      const opt = a.cover_url
+        ? await safeImage(a.cover_url, { width: 500, format: 'webp', quality: 70 })
+        : null;
+      return { ...a, coverSrc: opt?.src || null };
+    })
+  );
+} catch (err) {
+  // Fallback: tampilkan artikel tanpa cover
+  relatedWithCover = related.map(a => ({ ...a, coverSrc: null }));
+  console.error(`[ARTIKEL] Gagal load cover artikel terkait: ${err.message}`);
+}
 
 // Unit terkait - dikontrol manual lewat kolom related_units di sheet Articles,
 // bukan ditebak sistem. Ini yang jadi "jalan" dari artikel ke listing.
 const relatedUnitsList = units.filter(u => article.related_units?.includes(String(u.kode_unit).toLowerCase()));
-const relatedUnitsWithCover = await Promise.all(
-  relatedUnitsList.map(async (unit) => {
-    const cover = findCoverImage(gallery, 'unit', unit.kode_unit);
-    const opt = cover
-      ? await safeImage(cover.image_url, { width: 400, format: 'webp', quality: 70 })
-      : null;
-    return { ...unit, coverSrc: opt?.src || null };
-  })
-);
+
+let relatedUnitsWithCover = [];
+try {
+  relatedUnitsWithCover = await Promise.all(
+    relatedUnitsList.map(async (unit) => {
+      const cover = findCoverImage(gallery, 'unit', unit.kode_unit);
+      const opt = cover
+        ? await safeImage(cover.image_url, { width: 400, format: 'webp', quality: 70 })
+        : null;
+      return { ...unit, coverSrc: opt?.src || null };
+    })
+  );
+} catch (err) {
+  relatedUnitsWithCover = relatedUnitsList.map(u => ({ ...u, coverSrc: null }));
+  console.error(`[ARTIKEL] Gagal load cover unit terkait: ${err.message}`);
+}
 
 const { html: contentHtml, toc } = extractToc(stripLeadingH1(article.body_html));
 

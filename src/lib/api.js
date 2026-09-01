@@ -7,6 +7,27 @@ const articleCache = new Map();
 
 const API_URL = 'https://script.google.com/macros/s/AKfycbyyLeTA878Lxi1HROrPBa-2ZG3yNBMBa4z0ZUxzmLs_ZaVmzOcLu0rPCAeu-DqxiVMpgQ/exec';
 
+// Timeout 30 detik - Google Apps Script kadang lambat cold start
+const FETCH_TIMEOUT_MS = 30000;
+
+/** Fetch dengan timeout - mencegah build hang karena API tidak respons */
+async function fetchWithTimeout(url, options = {}) {
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
+  
+  try {
+    const res = await fetch(url, { ...options, signal: controller.signal });
+    return res;
+  } catch (err) {
+    if (err.name === 'AbortError') {
+      throw new Error(`Request timeout setelah ${FETCH_TIMEOUT_MS / 1000} detik. Apps Script mungkin sedang cold start.`);
+    }
+    throw err;
+  } finally {
+    clearTimeout(timeout);
+  }
+}
+
 /**
  * Dipanggil di frontmatter halaman .astro (jalan di Node.js pas build,
  * BUKAN di browser visitor) - jadi visitor akhir nggak pernah nunggu API ini.
@@ -14,18 +35,23 @@ const API_URL = 'https://script.google.com/macros/s/AKfycbyyLeTA878Lxi1HROrPBa-2
 export async function getSiteData() {
   if (cachedSiteData) return cachedSiteData;
 
-  const res = await fetch(`${API_URL}?action=all`);
-  if (!res.ok) {
-    throw new Error(`Gagal fetch data dari Apps Script (status ${res.status}). Cek apakah deployment masih aktif.`);
-  }
+  try {
+    const res = await fetchWithTimeout(`${API_URL}?action=all`);
+    if (!res.ok) {
+      throw new Error(`HTTP ${res.status}: ${res.statusText}`);
+    }
 
-  const data = await res.json();
-  if (data.error) {
-    throw new Error(`Apps Script mengembalikan error: ${data.error}`);
-  }
+    const data = await res.json();
+    if (data.error) {
+      throw new Error(data.error);
+    }
 
-  cachedSiteData = data;
-  return data; // { content, units, gallery, articles, generated_at }
+    cachedSiteData = data;
+    return data; // { content, units, gallery, articles, generated_at }
+  } catch (err) {
+    // Wrap dengan konteks yang lebih jelas
+    throw new Error(`Gagal fetch data dari Apps Script: ${err.message}. Cek apakah deployment masih aktif: ${API_URL}`);
+  }
 }
 
 /** 
@@ -34,18 +60,22 @@ export async function getSiteData() {
 export async function getArticleBySlug(slug) {
   if (articleCache.has(slug)) return articleCache.get(slug);
 
-  const res = await fetch(`${API_URL}?action=article&slug=${encodeURIComponent(slug)}`);
-  if (!res.ok) {
-    throw new Error(`Gagal fetch artikel "${slug}" (status ${res.status}).`);
-  }
+  try {
+    const res = await fetchWithTimeout(`${API_URL}?action=article&slug=${encodeURIComponent(slug)}`);
+    if (!res.ok) {
+      throw new Error(`HTTP ${res.status}: ${res.statusText}`);
+    }
 
-  const data = await res.json();
-  if (data.error) {
-    throw new Error(`Apps Script error untuk artikel "${slug}": ${data.error}`);
-  }
+    const data = await res.json();
+    if (data.error) {
+      throw new Error(data.error);
+    }
 
-  articleCache.set(slug, data);
-  return data;
+    articleCache.set(slug, data);
+    return data;
+  } catch (err) {
+    throw new Error(`Gagal fetch artikel "${slug}": ${err.message}`);
+  }
 }
 
 /** Cari foto pertama (sesuai urutan) untuk kategori & unit_id tertentu. */
