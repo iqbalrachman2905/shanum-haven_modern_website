@@ -35,7 +35,9 @@ const { article, coverSrc } = Astro.props;
   }
   .article-cover {
     aspect-ratio: 16 / 10;
-    background: var(--color-paper);
+    /* Gradient halus - kalau foto gagal load (file Drive dihapus/private),
+       area-nya tetap keliatan rapi, bukan icon broken image */
+    background: linear-gradient(160deg, color-mix(in srgb, var(--color-primary) 6%, white), var(--color-bg-paper));
   }
   .article-cover img {
     width: 100%;

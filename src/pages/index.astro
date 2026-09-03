@@ -93,7 +93,7 @@ const progressItems = progressItemsRaw.filter(Boolean);
 const articlesWithCover = await Promise.all(
   articles.slice(0, 3).map(async (a) => {
     const optimized = a.cover_url
-      ? await safeImage(a.cover_url, { width: 500, format: 'webp', quality: 72 })
+      ? await safeImage(drivePreviewUrl(a.cover_url, 500), { width: 500, format: 'webp', quality: 72 })
       : null;
     return { ...a, coverSrc: optimized?.src || null };
   })
