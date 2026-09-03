@@ -15,6 +15,7 @@ import VideoSection from '../components/VideoSection.astro';
 import ProgressSection from '../components/ProgressSection.astro';
 import KprCalculator from '../components/KprCalculator.vue';
 import FaqHomepage from '../components/FaqHomepage.astro';
+import Testimonial from '../components/Testimonial.astro';
 import ArticlePreview from '../components/ArticlePreview.astro';
 import Footer from '../components/Footer.astro';
 
@@ -192,10 +193,13 @@ const videoId = extractYoutubeId(content.video);
   <!-- 13. FAQ (Komponen Baru) -->
   <FaqHomepage content={content} />
 
-  <!-- 14. Artikel Terbaru -->
+  <!-- 14. Testimoni -->
+  <Testimonial testimonials={testimonials} content={content} />
+
+  <!-- 15. Artikel Terbaru -->
   <ArticlePreview articles={articlesWithCover} />
 
-  <!-- 15. Footer -->
+  <!-- 16. Footer -->
   <Footer content={content} />
 
 </BaseLayout>

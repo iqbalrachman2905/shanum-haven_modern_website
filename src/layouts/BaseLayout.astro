@@ -9,6 +9,7 @@ import '@fontsource/plus-jakarta-sans/700.css';
 import '../styles/tokens.css';
 import { withBase } from '../lib/paths.js';
 import StickyWhatsApp from '../components/StickyWhatsApp.astro';
+import BackToTop from '../components/BackToTop.astro';
 
 interface Props {
   title: string;
@@ -73,6 +74,7 @@ const orgJsonLd = {
   <body>
     <slot />
     <StickyWhatsApp waNumber={waNumber} />
+    <BackToTop />
 
     <!-- Scroll reveal: elemen [data-reveal] fade-up pas masuk viewport.
          Kecil, vanilla, sekali jalan - hormat prefers-reduced-motion via CSS. -->
