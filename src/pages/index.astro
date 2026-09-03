@@ -19,16 +19,17 @@ import ArticlePreview from '../components/ArticlePreview.astro';
 import Footer from '../components/Footer.astro';
 
 import { getSiteData, findCoverImage } from '../lib/api.js';
-import { safeImage } from '../lib/image.js';
+import { safeImage, drivePreviewUrl } from '../lib/image.js';
 import { extractYoutubeId } from '../lib/format.js';
 
 // Mengambil data dari endpoint Apps Script
 const { content, units, gallery, articles, testimonials } = await getSiteData();
 
-// Mengolah gambar Hero
+// Mengolah gambar Hero (pakai URL thumbnail Drive - lebih reliable & bisa
+// diambil resolusi tinggi lewat param sz)
 const heroImage = findCoverImage(gallery, 'hero', 'hero');
 const heroImageResult = heroImage
-  ? await safeImage(heroImage.image_url, { widths: [640, 1024, 1600, 1920], format: 'webp', quality: 70 })
+  ? await safeImage(drivePreviewUrl(heroImage.thumbnail_url || heroImage.image_url, 1920), { width: 1920, height: 1280, format: 'webp', quality: 70 })
   : null;
 
 // Menghitung ketersediaan unit
@@ -40,7 +41,7 @@ const unitsWithCover = await Promise.all(
   units.map(async (unit) => {
     const cover = findCoverImage(gallery, 'unit', unit.kode_unit);
     const optimized = cover
-      ? await safeImage(cover.image_url, { width: 800, format: 'webp', quality: 72 })
+      ? await safeImage(drivePreviewUrl(cover.thumbnail_url || cover.image_url, 1000), { width: 800, format: 'webp', quality: 72 })
       : null;
     return {
       ...unit,
@@ -57,8 +58,8 @@ const galleryItemsRaw = await Promise.all(
     .sort((a, b) => (a.urutan || 0) - (b.urutan || 0))
     .map(async (item) => {
       const [thumb, full] = await Promise.all([
-        safeImage(item.image_url, { width: 500, format: 'webp', quality: 70 }),
-        safeImage(item.image_url, { width: 1400, format: 'webp', quality: 78 })
+        safeImage(drivePreviewUrl(item.thumbnail_url || item.image_url, 500), { width: 500, format: 'webp', quality: 70 }),
+        safeImage(drivePreviewUrl(item.thumbnail_url || item.image_url, 1400), { width: 1400, format: 'webp', quality: 78 })
       ]);
       if (!thumb || !full) return null;
       return {
@@ -77,7 +78,7 @@ const progressItemsRaw = await Promise.all(
     .filter(g => g.kategori === 'progress' && g.image_url)
     .sort((a, b) => (a.urutan || 0) - (b.urutan || 0))
     .map(async (item) => {
-      const optimized = await safeImage(item.image_url, { width: 700, format: 'webp', quality: 72 });
+      const optimized = await safeImage(drivePreviewUrl(item.thumbnail_url || item.image_url, 1000), { width: 700, format: 'webp', quality: 72 });
       if (!optimized) return null;
       return {
         id: item.id,
@@ -98,9 +99,9 @@ const articlesWithCover = await Promise.all(
   })
 );
 
-// Mengolah gambar siteplan
-const siteplanResult = content.siteplan
-  ? await safeImage(content.siteplan, { width: 1400, format: 'webp', quality: 78 })
+// Mengolah gambar siteplan (prioritas thumbnail Drive)
+const siteplanResult = (content.siteplan_thumbnail || content.siteplan)
+  ? await safeImage(drivePreviewUrl(content.siteplan_thumbnail || content.siteplan, 1920), { width: 1400, format: 'webp', quality: 78 })
   : null;
 
 // Mengolah Video ID
@@ -157,10 +158,10 @@ const videoId = extractYoutubeId(content.video);
   <!-- 8. Pilihan Unit (Filter Tipe Unit Interaktif) -->
   <section id="unit" class="units-section">
     <div class="container">
-      <div class="section-heading">
-        <span class="eyebrow">Pilihan Unit</span>
-        <h2>Temukan Tipe yang Sesuai</h2>
-      </div>
+    <div class="section-heading" data-reveal>
+      <span class="eyebrow">Pilihan Unit</span>
+      <h2>Temukan Tipe yang Sesuai</h2>
+    </div>
       <UnitFilterGrid client:visible units={unitsWithCover} waNumber={content.whatsapp_number} />
     </div>
   </section>
@@ -180,7 +181,7 @@ const videoId = extractYoutubeId(content.video);
   <!-- 12. Kalkulator KPR -->
   <section id="kpr" class="kpr-section">
     <div class="container container-narrow">
-      <div class="section-heading">
+      <div class="section-heading" data-reveal>
         <span class="eyebrow">Simulasi KPR</span>
         <h2>Cek Estimasi Cicilan Bulanan</h2>
       </div>

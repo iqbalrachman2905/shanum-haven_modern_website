@@ -7,6 +7,14 @@ const articleCache = new Map();
 
 const API_URL = 'https://script.google.com/macros/s/AKfycbyyLeTA878Lxi1HROrPBa-2ZG3yNBMBa4z0ZUxzmLs_ZaVmzOcLu0rPCAeu-DqxiVMpgQ/exec';
 
+// Snapshot data terakhir yang berhasil diambil (disimpan manual di
+// data/snapshot.json). Dipakai sebagai fallback kalau Apps Script lagi
+// down / cold start kelewatin timeout - jadi build situs tetap jalan
+// dengan data terakhir yang diketahui baik, bukan gagal total.
+import snapshot from '../../data/snapshot.json';
+let usingSnapshot = false;
+export function isUsingSnapshot() { return usingSnapshot; }
+
 // Timeout 30 detik - Google Apps Script kadang lambat cold start
 const FETCH_TIMEOUT_MS = 30000;
 
@@ -49,7 +57,14 @@ export async function getSiteData() {
     cachedSiteData = data;
     return data; // { content, units, gallery, articles, generated_at }
   } catch (err) {
-    // Wrap dengan konteks yang lebih jelas
+    // Apps Script gagal dijangkau - fallback ke snapshot lokal biar build/
+    // dev tetap jalan (data mungkin stale, tapi lebih baik daripada error).
+    if (snapshot?.content) {
+      console.warn(`⚠️  Fetch Apps Script gagal (${err.message}). Memakai snapshot lokal dari ${snapshot.generated_at}.`);
+      usingSnapshot = true;
+      cachedSiteData = snapshot;
+      return snapshot;
+    }
     throw new Error(`Gagal fetch data dari Apps Script: ${err.message}. Cek apakah deployment masih aktif: ${API_URL}`);
   }
 }
@@ -74,6 +89,13 @@ export async function getArticleBySlug(slug) {
     articleCache.set(slug, data);
     return data;
   } catch (err) {
+    // Fallback ke artikel di snapshot lokal (kalau ada) saat API gagal.
+    const local = snapshot?.articles?.find(a => a.slug === slug);
+    if (local) {
+      console.warn(`⚠️  Fetch artikel "${slug}" gagal (${err.message}). Memakai snapshot lokal.`);
+      articleCache.set(slug, local);
+      return local;
+    }
     throw new Error(`Gagal fetch artikel "${slug}": ${err.message}`);
   }
 }

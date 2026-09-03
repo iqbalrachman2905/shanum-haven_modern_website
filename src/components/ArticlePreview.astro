@@ -15,15 +15,15 @@ const latest = articles.slice(0, 3);
       </div>
 
       <div class="article-scroll">
-        {latest.map((a) => (
-          <div class="article-scroll-item">
+        {latest.map((a, i) => (
+      <div class="article-scroll-item" data-reveal style={`--reveal-delay: ${i * 110}ms`}>
             <ArticleCard article={a} coverSrc={a.coverSrc} />
           </div>
         ))}
       </div>
 
       <div class="article-cta">
-        <a href={withBase('artikel/')} class="btn-outline">Lihat Semua Artikel</a>
+        <a href={withBase('artikel/')} class="btn btn-outline-dark">Lihat Semua Artikel</a>
       </div>
     </div>
   </section>
@@ -59,14 +59,8 @@ const latest = articles.slice(0, 3);
     text-align: center;
     margin-top: var(--space-lg);
   }
-  .btn-outline {
-    display: inline-block;
-    border: 1.5px solid var(--color-navy);
-    color: var(--color-navy);
-    font-weight: 600;
-    padding: 12px 28px;
-    border-radius: var(--radius-sm);
-    text-decoration: none;
+  .btn-outline-dark {
+    padding: 13px 30px;
   }
 
   /* Homepage bukan tempat baca artikel panjang - di mobile cukup scroll

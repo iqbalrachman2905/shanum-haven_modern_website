@@ -142,7 +142,16 @@ function monthlyFor(unit) { return estimateMonthlyInstallment(unit.harga, { dpPe
         <article v-for="unit in group.units" :key="unit.id" class="unit-card">
           <div class="unit-photo">
             <img v-if="unit.coverSrc" :src="unit.coverSrc" :alt="unit.coverCaption || `Tipe ${unit.tipe}`" loading="lazy" />
-            <div v-else class="unit-photo-placeholder">Foto belum tersedia</div>
+            <div v-else class="unit-photo-placeholder">
+              <svg class="placeholder-art" viewBox="0 0 120 90" fill="none" aria-hidden="true">
+                <path d="M22 46L60 18l38 28" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                <rect x="32" y="44" width="56" height="34" rx="3" stroke="currentColor" stroke-width="3"/>
+                <path d="M60 44v34M32 60h28M60 60h28" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity=".55"/>
+                <rect x="52" y="12" width="16" height="8" rx="2" stroke="currentColor" stroke-width="2.5"/>
+                <circle cx="94" cy="70" r="9" stroke="currentColor" stroke-width="2.5" opacity=".45"/>
+              </svg>
+              <span class="placeholder-label">Foto menyusul &middot; Tipe {{ unit.tipe }}</span>
+            </div>
             <span class="unit-status" :style="{ '--status-color': statusStyle(unit.status).color }">
               {{ statusStyle(unit.status).label }}
             </span>
@@ -312,7 +321,21 @@ function monthlyFor(unit) { return estimateMonthlyInstallment(unit.harga, { dpPe
 
 .unit-photo { position: relative; aspect-ratio: 4 / 3; background: var(--color-paper); }
 .unit-photo img { width: 100%; height: 100%; object-fit: cover; display: block; pointer-events: none; }
-.unit-photo-placeholder { width: 100%; height: 100%; display: grid; place-items: center; color: var(--color-navy-soft); font-size: 0.85rem; }
+.unit-photo-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background:
+    radial-gradient(60% 50% at 50% 0%, color-mix(in srgb, var(--color-secondary) 10%, transparent), transparent 70%),
+    linear-gradient(160deg, color-mix(in srgb, var(--color-primary) 6%, white), var(--color-bg-paper));
+  color: color-mix(in srgb, var(--color-primary) 45%, transparent);
+}
+.placeholder-art { width: 42%; max-width: 130px; }
+.placeholder-label { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.04em; color: var(--color-navy-soft); padding: 3px 12px; border-radius: 999px; background: color-mix(in srgb, var(--color-white) 65%, transparent); }
 .unit-status { position: absolute; top: 12px; left: 12px; background: var(--status-color); color: var(--color-white); font-size: 0.72rem; font-weight: 600; padding: 4px 12px; border-radius: 999px; }
 .compare-toggle { position: absolute; top: 10px; right: 10px; width: 28px; height: 28px; border-radius: 50%; border: none; background: color-mix(in srgb, var(--color-white) 90%, transparent); color: var(--color-navy-soft); display: grid; place-items: center; cursor: pointer; }
 .compare-toggle.is-active { background: var(--color-gold); color: var(--color-navy); }
@@ -324,7 +347,8 @@ function monthlyFor(unit) { return estimateMonthlyInstallment(unit.harga, { dpPe
 .unit-specs { display: flex; gap: 12px; list-style: none; font-size: 0.82rem; color: var(--color-navy-soft); flex-wrap: wrap; padding: 0; }
 .unit-footer { margin-top: auto; padding-top: var(--space-xs); border-top: 1px solid var(--color-paper); display: flex; align-items: center; justify-content: space-between; gap: var(--space-xs); }
 .unit-price { font-family: var(--font-display); font-weight: 700; font-size: 1.2rem; color: var(--color-navy); }
-.unit-wa-btn { background: #25D366; color: var(--color-white); font-size: 0.78rem; font-weight: 600; padding: var(--space-xs) 14px; border-radius: var(--radius-sm); text-decoration: none; white-space: nowrap; }
+.unit-wa-btn { background: #25D366; color: var(--color-white); font-size: 0.78rem; font-weight: 600; padding: var(--space-xs) 16px; border-radius: var(--radius-full); text-decoration: none; white-space: nowrap; transition: filter var(--duration-fast) var(--ease-out), transform var(--duration-fast) var(--ease-out); }
+.unit-wa-btn:hover { filter: brightness(1.06); transform: translateY(-1px); }
 
 /* Compare Bar & Modal styling (Tetap) */
 .compare-bar { position: fixed; bottom: calc(var(--space-md) + 64px); left: var(--space-md); right: var(--space-md); max-width: 420px; margin-inline: auto; background: rgba(20, 33, 61, 0.85); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(255,255,255,0.12); color: var(--color-white); border-radius: 999px; padding: 10px 10px 10px 20px; display: flex; align-items: center; justify-content: space-between; gap: 12px; box-shadow: 0 8px 32px rgba(0,0,0,0.18); z-index: 54; }
@@ -343,7 +367,7 @@ function monthlyFor(unit) { return estimateMonthlyInstallment(unit.harga, { dpPe
 .compare-columns { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--space-sm); }
 .compare-column { background: rgba(255,255,255,0.5); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); border: 1px solid var(--glass-border); border-radius: var(--radius-md); padding: var(--space-sm); display: flex; flex-direction: column; gap: var(--space-xs); }
 .compare-thumb { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: var(--radius-sm); display: block; }
-.compare-thumb-placeholder { background: var(--color-paper); }
+.compare-thumb-placeholder { background: linear-gradient(160deg, color-mix(in srgb, var(--color-primary) 6%, white), var(--color-bg-paper)); }
 .compare-column h4 { font-size: 1rem; color: var(--color-navy); }
 .compare-highlight { background: var(--color-gold-soft); border-radius: var(--radius-sm); padding: var(--space-xs) 10px; display: flex; flex-direction: column; gap: 2px; }
 .compare-highlight span { font-size: 0.7rem; color: var(--color-navy-soft); }
@@ -352,7 +376,8 @@ function monthlyFor(unit) { return estimateMonthlyInstallment(unit.harga, { dpPe
 .compare-table td { padding: 4px 0; border-bottom: 1px solid var(--color-paper); }
 .compare-table td:first-child { color: var(--color-navy-soft); }
 .compare-table td:last-child { text-align: right; font-weight: 600; color: var(--color-navy); }
-.compare-wa-btn { display: block; text-align: center; background: #25D366; color: var(--color-white); font-weight: 600; font-size: 0.85rem; padding: 10px; border-radius: var(--radius-sm); text-decoration: none; margin-top: auto; }
+.compare-wa-btn { display: block; text-align: center; background: #25D366; color: var(--color-white); font-weight: 600; font-size: 0.85rem; padding: 10px; border-radius: var(--radius-full); text-decoration: none; margin-top: auto; transition: filter var(--duration-fast) var(--ease-out); }
+.compare-wa-btn:hover { filter: brightness(1.06); }
 
 /* Desktop Adjustments */
 @media (min-width: 768px) {

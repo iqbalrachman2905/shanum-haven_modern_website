@@ -14,7 +14,7 @@ import { extractToc, stripLeadingH1 } from '../../lib/content.js';
 import { getSiteData, getArticleBySlug, findCoverImage } from '../../lib/api.js';
 import { formatDate } from '../../lib/format.js';
 import { withBase } from '../../lib/paths.js';
-import { safeImage } from '../../lib/image.js';
+import { safeImage, drivePreviewUrl } from '../../lib/image.js';
 
 // getStaticPaths jalan sekali saat build - inilah yang bikin tiap artikel
 // jadi file HTML fisik sendiri (/artikel/judul-slug/index.html), BUKAN
@@ -120,7 +120,7 @@ try {
     relatedUnitsList.map(async (unit) => {
       const cover = findCoverImage(gallery, 'unit', unit.kode_unit);
       const opt = cover
-        ? await safeImage(cover.image_url, { width: 400, format: 'webp', quality: 70 })
+        ? await safeImage(drivePreviewUrl(cover.thumbnail_url || cover.image_url, 800), { width: 400, format: 'webp', quality: 70 })
         : null;
       return { ...unit, coverSrc: opt?.src || null };
     })

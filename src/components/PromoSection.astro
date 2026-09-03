@@ -18,13 +18,13 @@ const isPromoActive = (!start || now >= start) && (!end || now <= end);
 {promoItems.length > 0 && isPromoActive && (
   <section id="promo" class="promo-section">
     <div class="container">
-      <div class="section-heading">
+      <div class="section-heading" data-reveal>
         <span class="eyebrow">Promo Terbatas</span>
         <h2>Promo & Bonus Menarik</h2>
       </div>
 
       <div class="promo-grid">
-        <div class="promo-card">
+        <div class="promo-card" data-reveal>
           <h3>KPR & Cash Bertahap</h3>
           <ul>
             {promoItems.map((item) => <li>✓ {item}</li>)}
@@ -32,7 +32,7 @@ const isPromoActive = (!start || now >= start) && (!end || now <= end);
           </ul>
         </div>
         
-        <div class="promo-card promo-card-highlight">
+        <div class="promo-card promo-card-highlight" data-reveal style="--reveal-delay: 120ms">
           <h3>Cash Keras</h3>
           <ul>
             {promoItems.map((item) => <li>✓ {item}</li>)}

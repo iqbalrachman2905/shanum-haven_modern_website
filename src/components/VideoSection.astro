@@ -10,7 +10,7 @@ const { videoId } = Astro.props;
         <h2>Lihat Video Cluster</h2>
       </div>
 
-      <div class="video-facade" data-video-facade data-video-id={videoId}>
+      <div class="video-facade" data-video-facade data-video-id={videoId} data-reveal>
         <img src={`https://img.youtube.com/vi/${videoId}/hqdefault.jpg`} alt="Thumbnail video" loading="lazy" />
         <button class="video-play-btn" aria-label="Putar video">
           <svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>

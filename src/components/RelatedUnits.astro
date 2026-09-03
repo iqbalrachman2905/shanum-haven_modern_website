@@ -55,7 +55,7 @@ const { units, waNumber } = Astro.props; // units: [{ ...unit, coverSrc }]
     aspect-ratio: 4 / 3;
     object-fit: cover;
     display: block;
-    background: var(--color-white);
+    background: linear-gradient(160deg, color-mix(in srgb, var(--color-primary) 6%, white), var(--color-bg-paper));
   }
   .unit-mini-body {
     padding: var(--space-sm);
@@ -89,7 +89,7 @@ const { units, waNumber } = Astro.props; // units: [{ ...unit, coverSrc }]
     font-size: 0.82rem;
     font-weight: 600;
     padding: 8px;
-    border-radius: var(--radius-sm);
+    border-radius: var(--radius-full);
     text-decoration: none;
   }
 </style>

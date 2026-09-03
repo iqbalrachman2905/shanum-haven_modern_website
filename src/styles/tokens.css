@@ -14,7 +14,7 @@
   
   /* 3. TIPOGRAFI (Cocokkan dengan @fontsource imports di BaseLayout) */
   --font-display: 'Playfair Display', Georgia, serif;
-  --font-body: 'Montserrat', -apple-system, sans-serif;
+  --font-body: 'Plus Jakarta Sans', -apple-system, sans-serif;
   
   /* 3b. TIPOGRAFI SKALA (Heading & text sizes) */
   --text-h1: clamp(2.2rem, 6vw, 4rem);
@@ -147,12 +147,105 @@ img { max-width: 100%; display: block; }
 /* --- AKSESIBILITAS & ANIMASI --- */
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+  * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; animation-iteration-count: 1 !important; }
 }
 a:focus-visible, button:focus-visible {
   outline: 2px solid var(--color-secondary);
   outline-offset: var(--focus-ring-offset);
   box-shadow: var(--focus-ring);
+}
+
+/* --- POLISH KECL --- */
+/* Section target anchor gak ketutupan navbar fixed */
+section[id] { scroll-margin-top: 72px; }
+/* Warna teks ter-select ikut brand */
+::selection { background: color-mix(in srgb, var(--color-secondary) 45%, transparent); color: var(--color-primary); }
+
+/* --- SCROLL REVEAL ------------------------------------------------------ */
+/* Elemen ber-atribut data-reveal fade-up pas masuk viewport. Hidden state
+   cuma aktif kalau JS jalan (html.js-reveal) supaya tanpa-JS konten tetap
+   keliatan. Stagger via style="--reveal-delay: .1s". */
+html.js-reveal [data-reveal] {
+  opacity: 0;
+  transform: translateY(26px);
+  transition:
+    opacity 0.7s var(--ease-out) var(--reveal-delay, 0s),
+    transform 0.7s var(--ease-out) var(--reveal-delay, 0s);
+  will-change: opacity, transform;
+}
+html.js-reveal [data-reveal].is-revealed {
+  opacity: 1;
+  transform: none;
+}
+
+/* --- TOMBOL PREMIUM (global utility) ----------------------------------- */
+/* Pill dengan gradient gold + sheen sweep pas hover. Dipakai lewat
+   class="btn btn-gold" dsb; komponen tinggal nambah ukuran sendiri. */
+.btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-family: var(--font-body);
+  font-weight: 700;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  overflow: hidden;
+  white-space: nowrap;
+  border-radius: var(--radius-full);
+  transition:
+    transform var(--duration-normal) var(--ease-spring),
+    box-shadow var(--duration-normal) var(--ease-out),
+    filter var(--duration-normal) var(--ease-out);
+}
+.btn::after {
+  /* Sheen sweep */
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(105deg, transparent 40%, rgba(255, 255, 255, 0.45) 50%, transparent 60%);
+  transform: translateX(-120%);
+  transition: transform 0.7s var(--ease-out);
+  pointer-events: none;
+}
+.btn:hover::after { transform: translateX(120%); }
+.btn:active { transform: translateY(0) scale(0.98); }
+
+.btn-gold {
+  background: linear-gradient(135deg, color-mix(in srgb, var(--color-secondary) 72%, white) 0%, var(--color-secondary) 45%, color-mix(in srgb, var(--color-secondary) 82%, black) 100%);
+  color: var(--color-primary);
+  box-shadow: 0 6px 20px color-mix(in srgb, var(--color-secondary) 35%, transparent);
+}
+.btn-gold:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px color-mix(in srgb, var(--color-secondary) 48%, transparent);
+}
+
+.btn-ghost-light {
+  background: var(--glass-bg-hero);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--glass-border-hero);
+  color: var(--color-bg-main);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+}
+.btn-ghost-light:hover {
+  transform: translateY(-2px);
+  background: color-mix(in srgb, var(--color-bg-main) 20%, transparent);
+}
+
+.btn-outline-dark {
+  background: transparent;
+  color: var(--color-primary);
+  border: 2px solid color-mix(in srgb, var(--color-primary) 25%, transparent);
+}
+.btn-outline-dark:hover {
+  transform: translateY(-2px);
+  border-color: var(--color-secondary);
+  color: var(--color-primary);
+  box-shadow: 0 8px 24px color-mix(in srgb, var(--color-secondary) 25%, transparent);
 }
 
 /* --- GLASSMORPHISM UTILITY CLASS --- */

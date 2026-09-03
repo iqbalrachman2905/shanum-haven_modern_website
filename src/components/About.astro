@@ -1,5 +1,6 @@
 ---
 import { Image } from 'astro:assets';
+import { drivePreviewUrl } from '../lib/image.js';
 
 const { content, gallery } = Astro.props;
 const imageTentang = gallery.find(item => item.kategori === 'tentang' && item.thumbnail_url);
@@ -7,12 +8,13 @@ const imageTentang = gallery.find(item => item.kategori === 'tentang' && item.th
 
 <section id="tentang" class="tentang-section">
   <div class="container">
-    <div class="banner">
+      <div class="banner" data-reveal>
       {imageTentang ? (
         <Image
-          src={imageTentang.thumbnail_url}
-          inferSize
+          src={drivePreviewUrl(imageTentang.thumbnail_url, 1400)}
           alt="Tentang PKP2 Extension"
+          width={1400}
+          height={900}
           widths={[480, 900, 1400]}
           sizes="100vw"
           format="webp"
