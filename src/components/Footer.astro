@@ -12,7 +12,7 @@ const year = new Date().getFullYear();
       <h2>Siap Punya Rumah Baru di Cibubur?</h2>
       <p>{content.tagline || 'Konsultasi gratis dengan tim marketing kami'}</p>
     </div>
-    <a href={waLink} target="_blank" rel="noopener noreferrer" class="btn-wa">Chat Sekarang</a>
+    <a href={waLink} target="_blank" rel="noopener noreferrer" class="btn btn-gold cta-btn">Chat Sekarang</a>
   </div>
 </section>
 
@@ -57,14 +57,9 @@ const year = new Date().getFullYear();
   .cta-inner p {
     color: color-mix(in srgb, var(--color-bg-main) 75%, transparent);
   }
-  .btn-wa {
-    display: inline-block;
-    background: var(--color-secondary);
-    color: var(--color-primary);
-    font-weight: 600;
-    padding: 14px 32px;
-    border-radius: var(--radius-sm);
-    text-decoration: none;
+  .cta-btn {
+    padding: 15px 34px;
+    font-size: 1rem;
   }
 
   .site-footer {

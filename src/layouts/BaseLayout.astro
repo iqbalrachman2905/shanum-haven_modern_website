@@ -2,10 +2,10 @@
 import '@fontsource/playfair-display/500.css';
 import '@fontsource/playfair-display/600.css';
 import '@fontsource/playfair-display/700.css';
-import '@fontsource/montserrat/400.css';
-import '@fontsource/montserrat/500.css';
-import '@fontsource/montserrat/600.css';
-import '@fontsource/montserrat/700.css';
+import '@fontsource/plus-jakarta-sans/400.css';
+import '@fontsource/plus-jakarta-sans/500.css';
+import '@fontsource/plus-jakarta-sans/600.css';
+import '@fontsource/plus-jakarta-sans/700.css';
 import '../styles/tokens.css';
 import { withBase } from '../lib/paths.js';
 import StickyWhatsApp from '../components/StickyWhatsApp.astro';
@@ -49,6 +49,11 @@ const orgJsonLd = {
 
     <title>{title}</title>
     <meta name="description" content={description} />
+    <meta name="theme-color" content="#102A43" />
+
+    <!-- Tandai bahwa JS jalan - dipakai CSS scroll-reveal supaya tanpa-JS
+         konten tetap keliatan (progressive enhancement). -->
+    <script is:inline>document.documentElement.classList.add('js-reveal');</script>
 
     <!-- Open Graph - ini yang bikin preview WA/Instagram tampil bagus -->
     <meta property="og:type" content="website" />
@@ -68,5 +73,24 @@ const orgJsonLd = {
   <body>
     <slot />
     <StickyWhatsApp waNumber={waNumber} />
+
+    <!-- Scroll reveal: elemen [data-reveal] fade-up pas masuk viewport.
+         Kecil, vanilla, sekali jalan - hormat prefers-reduced-motion via CSS. -->
+    <script>
+      const revealEls = document.querySelectorAll('[data-reveal]');
+      if ('IntersectionObserver' in window && revealEls.length > 0) {
+        const io = new IntersectionObserver((entries) => {
+          for (const entry of entries) {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('is-revealed');
+              io.unobserve(entry.target);
+            }
+          }
+        }, { threshold: 0.15, rootMargin: '0px 0px -8% 0px' });
+        revealEls.forEach((el) => io.observe(el));
+      } else {
+        revealEls.forEach((el) => el.classList.add('is-revealed'));
+      }
+    </script>
   </body>
 </html>

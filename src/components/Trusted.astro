@@ -36,7 +36,7 @@ const trustItems = trustKeys.map((key, i) => {
 
     <div class="trust-grid" style={`--cols:${trustItems.length}`}>
       {trustItems.map((item, i) => (
-        <div class="trust-item">
+        <div class="trust-item" data-reveal style={`--reveal-delay: ${i * 90}ms`}>
           <svg class="trust-icon" viewBox="0 0 24 24" fill="none" stroke={item.icon.color} stroke-width="1.6">
             <path stroke-linecap="round" stroke-linejoin="round" d={item.icon.path} />
           </svg>

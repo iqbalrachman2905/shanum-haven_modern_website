@@ -10,14 +10,14 @@ const specs = specKeys.map(key => {
 
 <section id="spesifikasi" class="spesifikasi-section">
   <div class="container">
-    <div class="section-heading">
+    <div class="section-heading" data-reveal>
       <span class="eyebrow">Kualitas Material</span>
       <h2>Spesifikasi Bangunan</h2>
     </div>
 
     <div class="spec-grid">
-      {specs.map(spec => (
-        <div class="spec-item">
+      {specs.map((spec, i) => (
+        <div class="spec-item" data-reveal style={`--reveal-delay: ${(i % 5) * 70}ms`}>
           <span class="spec-icon">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
               <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path>

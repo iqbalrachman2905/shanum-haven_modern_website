@@ -11,8 +11,8 @@ const { items } = Astro.props; // [{ id, caption, src }]
       </div>
 
       <div class="progress-grid">
-        {items.map((item) => (
-          <figure class="progress-card">
+        {items.map((item, i) => (
+          <figure class="progress-card" data-reveal style={`--reveal-delay: ${i * 100}ms`}>
             <img src={item.src} alt={item.caption || 'Progress pembangunan'} loading="lazy" />
             {item.caption && <figcaption>{item.caption}</figcaption>}
           </figure>
