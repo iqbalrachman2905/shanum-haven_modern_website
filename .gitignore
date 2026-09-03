@@ -43,3 +43,4 @@ tsconfig.tsbuildinfo
 .trae/
 .warp/
 .windsurf/
+package-lock.json
